@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="slider">
+        <div class="lightbox">
+            <img src="" class="lightboxImg" onclick="hideLightbox()">
+        </div>
+        <div class="slides">
+        	<img src="https://picsum.photos/id/1/600/400" alt="" class="slide" onclick="showLightbox('https://picsum.photos/id/1/600/400')">
+            <img src="https://picsum.photos/id/20/600/400" alt="" class="slide" onclick="showLightbox('https://picsum.photos/id/20/600/400')">
+            <img src="https://picsum.photos/id/30/600/400" alt="" class="slide" onclick="showLightbox('https://picsum.photos/id/30/600/400')">
+            <img src="https://picsum.photos/id/40/600/400" alt="" class="slide" onclick="showLightbox('https://picsum.photos/id/40/600/400')">
+            <img src="https://picsum.photos/id/50/600/400" alt="" class="slide" onclick="showLightbox('https://picsum.photos/id/50/600/400')">
+        </div>
+        </div>
+    </div>
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+        <span class="dot" onclick="currentSlide(5)"></span>
+    </div>
+    <div style="text-align:center">
+        <button onclick="startStopSlide()">PAUSE/RESUME</button>
+    </div>
+        <div style="text-align:center">
+        <button onclick="prevSlide(1)"> <------------ </a>
+  <button onclick="nextSlide(1)"> ------------> </a>
+    </div>
+    <main>
+    </main>
+    <script src="main.js"></script>
+</body>
+
+</html>

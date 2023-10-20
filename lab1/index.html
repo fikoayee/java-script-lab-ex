@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 1</title>
+</head>
+    <div id="ContentShame">
+  <input type="text" id="num1" />
+  <input type="text" id="num2" />
+  <input type="text" id="num3" />
+  <input type="text" id="num4" />
+  <button id="calculate">Przelicz</button>
+    <p id="sum"></p>
+    <p id="min"></p>
+    <p id="max"></p>
+    <p id="avg"></p>
+</div>
+<hr/>
+<div id="ContentZieew">
+    <input type="text" id="ziewNum1" onkeyup="liveCalculation()" />
+    <input type="text" id="ziewNum2" onkeyup="liveCalculation()"/>
+    <input type="text" id="ziewNum3" onkeyup="liveCalculation()"/>
+    <input type="text" id="ziewNum4" onkeyup="liveCalculation()"/>
+    <div>
+      <p id="ziewSum"></p>
+      <p id="ziewMin"></p>
+      <p id="ziewMax"></p>
+      <p id="ziewAvg"></p>
+  </div>
+<div>
+    <hr/>
+    <div id="ContentNormal">
+      <div id="InputFields">
+        <input type="text" id="normalNum1" onkeyup="passValue(0); liveCalculationNormal();"/>
+        <input type="text" id="normalNum2" onkeyup="passValue(1); liveCalculationNormal();"/>
+        <input type="text" id="normalNum3" onkeyup="passValue(2); liveCalculationNormal();" />
+      </div>
+      <div>
+        <button id="btnAdd" onclick="addInputField()">Add</button>
+        <button id="btnRemove" onclick="removeInputFields()">Remove Empty</button>
+      </div>
+        <div>
+          <p id="normalSum"></p>
+          <p id="normalMin"></p>
+          <p id="normalMax"></p>
+          <p id="normalAvg"></p>
+      </div>
+    <div>
+</div>
+<script src="shame.js" type="text/javascript"></script>
+<script src="zieew.js" type="text/javascript"></script>
+<script src="normal.js" type="text/javascript"></script>  
+  <script type="text/javascript">
+    // console.log('test')
+  </script>
+</body>
+
+</html>
