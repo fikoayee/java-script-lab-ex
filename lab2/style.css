@@ -32,12 +32,12 @@
   }
 
 .lightbox{
-    opacity: 0.9;
+    z-index: 1;
     display: none;
     position: fixed;
     justify-content: center;
     align-items: center;
-    width: 1000px; 
-    height: 1000px; 
-    background-color: rgb(234, 231, 49);
+    width: 700px; 
+    height: 500px; 
+    background-color: rgb(86, 86, 83);
 }
