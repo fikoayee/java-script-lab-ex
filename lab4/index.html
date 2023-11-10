@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <title>Lab 4</title>
+</head>
+    <div id="create-note">
+        <label for="title">Title</label>
+        <input id="title" type="text"/>
+        <label for="content">Content</label>
+        <textarea id="content" type="textarea"></textarea>
+        <!-- <label for="createDate">Date</label>
+        <input type="date" id="createDate"/> -->
+        <label for="isPinned">Pin</label>
+        <input type="checkbox" id="isPinned" value="false"/>
+        <label for="color">Color</label>
+        <select id="color">
+          <option value="#fbdca7">Yellow</option>
+          <option value="#b8dbc1">Green</option>
+          <option value="#fba7a7">Red</option>
+        </select>
+<button onclick="onSubmit()">Save</button>
+    </div>
+    <button onclick="check()">Check</button>
+    <button onclick="clearLocalStorage()">Clear Local Storage</button>
+    <section id="list-of-notes">
+      <!-- <input value="dsf" disabled/> -->
+
+    </section>
+
+<script src="main.js" type="text/javascript"></script>  
+  <script type="text/javascript">
+    // console.log('test')
+  </script>
+</body>
+
+</html>
