@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <title>Lab 4</title>
+</head>
+<div class="bg-zinc-700">
+<div class="items-center justify-center h-20 border-2 bg-zinc-800 border-zinc-600 flex space-x-5 shadow-black shadow-2xl">
+<input id="city-input" placeholder="Enter a place" type="text" class="w-96 border-2 border-zinc-200"/>
+<button class="rounded-md bg-red-600 text-white w-[100px] h-[40px] font-bold border-2 border-red-800 hover:bg-red-800 hover:border-red-500" onclick="clearFunc()"> clear cache</button>
+<button class="rounded-md bg-blue-600 text-white w-[100px] h-[40px] font-bold border-2 border-blue-800 hover:bg-blue-800 hover:border-blue-500" onclick="testFunc()"> Test</button>
+</div>
+<!-------------- DISPLAYS LIST OF ADDED CITIES -------------->
+<section id="list-of-cities" class="mx-2 my-10 grid grid-cols-1 lg:grid-cols-6 md:grid-cols-2 row-4 gap-4 min-w-[400px] min-h-[900px]">
+
+  </section>
+
+</div>
+</div>
+
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcdSE2ZC85PPke5Bbsqdm14m8pOFjlvMQ&libraries=places&geometry&callback=initAutocomplete" async defer>
+</script>
+<script src="card.js" type="text/javascript"></script>
+<script src="weather.js" type="text/javascript"></script>  
+<script src="googleAPI.js" type="text/javascript"></script>  
+  <script type="text/javascript">
+  </script>
+</body>
+
+</html>
+
+
