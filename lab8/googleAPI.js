@@ -22,5 +22,7 @@ function initAutocomplete(){
     else{
       // Display details about the valid place
         getCityInfoAsync(place.name)
+        
     }
+    document.getElementById('city-input').value = ''
   }
