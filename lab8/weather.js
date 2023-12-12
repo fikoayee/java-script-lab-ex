@@ -1,7 +1,7 @@
 const apiKey = "8c1e045c377ea44eb367b3d984b7c36f";
 let link;
 let storedCities = [];
-// const interval = setInterval(updateCitiesInfoAsync, 60*5*1000)
+// const interval = setInterval(updateCitiesInfoAsync, 60*5*1000)   <------------------ UPDATES ALL CITIES INFO EVERY 5 MINUTES
 
 // --------------------------- GET CITY INFO FROM API ---------------------------
 async function getCityInfoAsync(
