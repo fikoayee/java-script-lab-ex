@@ -52,8 +52,8 @@ function searchNote() {
       .includes(searchInput.toLowerCase());
     return titleCheck || contentCheck || tagsCheck;
   });
+
   if (filteredNotes == "") {
-    console.log("tutaj");
     filteredNotes = notes;
   }
   clearDOM();

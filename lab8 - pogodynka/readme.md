@@ -13,7 +13,7 @@
 
 ### Wersja "Last christmas I gave you...": 
 1. Wykres pogody godzinowej (np. najblizsze 12 godzin) dla wybranej przez użytkownika lokalizacji.
- Podpowiadanie miast z autouzupełnianiem z api. 
+2. Podpowiadanie miast z autouzupełnianiem z api. 
 
 
 ### Przydamisie:

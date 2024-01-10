@@ -10,8 +10,8 @@ async function getCityInfoAsync(
   if (storedCities.length < 10) {
     link = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
     const response = await fetch(link);
-
-    fetch(link)
+    if(response.ok){
+      fetch(link)
       .then((response) => response.json())
       .then((data) => {
         const cityInfo = {
@@ -31,6 +31,11 @@ async function getCityInfoAsync(
         saveCitiesToLocalStorage();
         updateDOM(); // updates list of displayed cities
       });
+    }
+   else if (!response.ok){
+    alert(`Could not fetch data. Error 404 (not found)`)
+   }
+    
   } else {
     alert("You've reached the maximum limit of city cards (10).");
   }
@@ -62,6 +67,8 @@ async function updateCitiesInfoAsync() {
     await getCityInfoAsync(city.name);
   }
 }
+
+// ---------------------------  ---------------------------
 
 // --------------------------- WEATHER INFO FORMAT FUNCTIONS ---------------------------
 function getWeatherIconById(iconId) {
@@ -105,14 +112,14 @@ function expandDOM() {
 
     const cityCardElement = document.createElement("div");
     cityCardElement.innerHTML = createCityCardElement(city);
-    // -----------------------------------------------------------------------------------------------
+    // ----    remove button  ----  
     const buttonRemoveElement = document.createElement("button");
     buttonRemoveElement.textContent = "remove";
     buttonRemoveElement.className = removeBtnStyle;
     buttonRemoveElement.addEventListener("click", function () {
       removeCity(city);
     });
-    // ------------------------------------------------------------------------------
+    // ----  ----  ----  ----  ----  ----  
     containerDivElement.appendChild(cityCardElement);
     containerDivElement.appendChild(buttonRemoveElement);
 

@@ -1,0 +1,83 @@
+const canvas = document.getElementById("gameBoard");
+const ctx = canvas.getContext("2d");
+const ballRadius = 10;
+
+// const paddleHeight = 10;
+// const paddleWidth = 75;
+// let paddleX = (canvas.width - paddleWidth) / 2;
+
+
+// ball one values
+let x = canvas.width / 2;
+let y = canvas.height - 30;
+let dx = 2;
+let dy = -2;
+
+// ball two values
+let x2 = canvas.width / 5;
+let y2 = canvas.height - 10;
+let dx2 = 3;
+let dy2 = -3;
+
+function drawBall() {
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.closePath();
+  }
+  function drawBall2() {
+    ctx.beginPath();
+    ctx.arc(x2, y2, ballRadius, 0, Math.PI*2);
+    ctx.fillStyle = "blue";
+    ctx.fill();
+    ctx.closePath();
+  }
+  
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBall();
+    drawBall2();
+
+    
+    // ------------------------------------------------------------------------------
+    // When the distance between the center of the ball and the edge of the wall is exactly the same as the radius of the ball, it will change the movement direction.
+    if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+    }
+    if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+        dy = -dy;
+    }
+    x += dx;
+    y += dy;
+    // ------------------------------------------------------------------------------
+
+    // -----------------------------     BALL TWO    ---------------------------------------------
+    // When the distance between the center of the ball and the edge of the wall is exactly the same as the radius of the ball, it will change the movement direction.
+    if(x2 + dx2 > canvas.width-ballRadius || x2 + dx2 < ballRadius) {
+        dx2 = -dx2;
+    }
+    if(y2 + dy2 > canvas.height-ballRadius || y2 + dy2 < ballRadius) {
+        dy2 = -dy2;
+    }
+    x2 += dx2;
+    y2 += dy2;
+    // ------------------------------------------------------------------------------
+    // check()
+}
+// function check(){
+//     if((Math.abs(x - x2) < (ballRadius + ballRadius)) && (Math.abs(y - y2) < (ballRadius + ballRadius)))
+// {
+//     //reverse ball one
+//     dx = -dx;
+//     dy = -dy;
+
+//     //reverse ball two
+//     dx2 = -dx2;
+//     dy2 = -dy2;
+// }
+// }
+
+
+  setInterval(draw, 10);
+  
