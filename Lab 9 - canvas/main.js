@@ -13,6 +13,7 @@ const minMultipierX = 20;
 const maxMultipierX = 30;
 const minMultiplierY = 10;
 const maxMultiplierY = 20;
+const mouseForce = 0.05;
 let startInterval = setInterval(draw, 10);
 
 // ============================ GAME ANIMATION ============================
@@ -281,16 +282,25 @@ canvas.addEventListener("mousemove", (event) => {
 
 // ----- check distance between balls and mouse cursor -----
 function checkDistanceCursor() {
+  let posX = 0;
+  let posY = 0;
   for (let i = 0; i < balls.length; i++) {
     const dx = balls[i].x - mouseX;
     const dy = balls[i].y - mouseY;
     const squaredDistance = dx * dx + dy * dy;
-    if (squaredDistance < 100000) {
-      
-      // -- move ball towards cursor
+    const ballRadius = balls[i].radius
+    if (squaredDistance < 10000) {
+      // https://stackoverflow.com/questions/49806292/make-a-ball-on-a-canvas-slowly-move-towards-the-mouse
+      posX =
+        balls[i].x + (dx / squaredDistance) * (squaredDistance * mouseForce);
+      posY =
+        balls[i].y + (dy / squaredDistance) * (squaredDistance * mouseForce);
+
+        // ----- checks if new coords are out of gameboard -----
+      balls[i].x = posX-ballRadius < 0 ? 0+ballRadius : posX+ballRadius < 1280 ? posX : 1280-ballRadius
+      balls[i].y = posY-ballRadius < 0 ? 0+ballRadius : posY+ballRadius < 720 ? posY : 720-ballRadius
     }
   }
 }
-
 // -----------------------------------------------
 newGame();
