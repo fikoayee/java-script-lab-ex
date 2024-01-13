@@ -3,7 +3,7 @@ let movingHoles = [];
 let tunnelHoles = [];
 let holes = [];
 let holeId = -1;
-
+let startDate =0;
 // ============================ GAMEBOARD ============================
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
@@ -76,12 +76,27 @@ function removeHole(holeToRemove) {
   } else {
     staticHoles = staticHoles.filter((hole) => hole.id !== holeToRemove.id);
   }
+  checkWin()
 }
 
+// ============================= HANDLE WIN ============================
+function checkWin() {
+  if (movingHoles.length === 0 && staticHoles.length === 0) {
+    handleRestart();
+  }
+}
+function handleRestart(){
+  records.push(getPlayTime())
+  saveRecordToLocalStorage();
+  tunnelHoles = [];
+  createHoles(1, true, false); // create tunnels
+  createHoles(1, false, false); // create static holes
+  createHoles(1, false, true); // create moving holes
+}
 // ============================ MOVE HOLES ============================
-function moveAllHoles(){
-  for(let hole of movingHoles){
-    moveHole(hole)
+function moveAllHoles() {
+  for (let hole of movingHoles) {
+    moveHole(hole);
   }
 }
 
@@ -198,6 +213,31 @@ function calculateSpeed() {
   ballY += speedY;
 }
 
+// ============================ LOCAL STORAGE & RECORD FUNCTIONS ============================
+
+// ----- record timer -----
+function startTimer(){
+  startDate = new Date();
+}
+function getPlayTime(){
+  var endDate   = new Date();
+  var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+  return seconds;
+}
+
+// ----- local storage -----
+function saveRecordToLocalStorage() {
+  localStorage.setItem("records", JSON.stringify(records));
+}
+
+function getRecordsFromLocalStorage() {
+  return JSON.parse(localStorage.getItem("records")) || [];
+}
+
+function clearLocalStorage() {
+  localStorage.clear();
+}
+
 // ======== START GAME =========
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // clear game board
@@ -210,11 +250,16 @@ function draw() {
 }
 
 function start() {
+  records = getRecordsFromLocalStorage();
+  if(!records){
+    records = [];
+  }
   startInterval = setInterval(draw, 10);
+  startTimer();
 }
 
 function fifi() {
-  console.log(tunnelHoles);
+  console.log(records);
 }
 createHoles(1, true, false); // create tunnels
 createHoles(1, false, false); // create static holes
