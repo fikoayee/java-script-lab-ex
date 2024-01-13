@@ -1,89 +1,222 @@
+let staticHoles = [];
+let movingHoles = [];
+let tunnelHoles = [];
+let holes = [];
+let holeId = -1;
+
 // ============================ GAMEBOARD ============================
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+let beta = 0;
+let gamma = 0;
 
-// ============================ GAME SETTINGS ============================
-let balls = [];
-const numOfBalls = 5; // number of holes at the beginning
-// const maxDistance = 300 * 300; // max allowed distance between balls to draw a line
-let multiplierX = 20;
-let multiplierY = 10;
-let startInterval = setInterval(draw, 10);
+window.addEventListener("deviceorientation", (event) => {
+  beta = event.beta; // |  [-180, 180)   def: 0
+  gamma = event.gamma; // ---  [-90, 90)    def: 0
+});
 
-// ============================ GAME ANIMATION ============================
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // clear game board
-    drawBalls();
-    wallBounce();
-    checkDistance();
-  }
+// ============================ SETTINGS ============================
+// ----- holes -----
+const maxDistance = 300; // max distance between hole & ball
+const holeRadius = 30;
+const numOfStaticHoles = 2;
+const numOfMovingHoles = 2;
+const numOfTunnels = 2;
+const movingHoleSpeed = 350;
 
+// ----- ball -----
+let ballX = canvas.width / 2;
+let ballY = canvas.height / 2;
+const ballRadius = 25;
+let speedX = 0;
+let speedY = 0;
+const speedMulitplier = 0.008;
+
+// ============================ TOOLS ============================
 // ----- get random value from specific range -----
 function getRandomNumber(minValue, maxValue) {
-    return Math.random() * (maxValue - minValue) + minValue;
-  }
+  return Math.random() * (maxValue - minValue) + minValue;
+}
 
-// ============================ DRAW BALLS WITH UPDATED VALUES ============================
-function drawBalls() {
-    for (let ball of balls) {
+// ============================ CREATE HOLES ============================
+function createHoles(amount, isTunnel, isMoving) {
+  for (let i = 0; i < amount; i++) {
+    holeId++;
+    let x = getRandomNumber(holeRadius, canvas.width - holeRadius);
+    let y = getRandomNumber(holeRadius, canvas.height - holeRadius);
+    const newHole = {
+      id: holeId,
+      x: x,
+      y: y,
+      x1: x,
+      y1: y,
+      isTunnel: isTunnel,
+      isMoving: isMoving,
+      x2: getRandomNumber(holeRadius, canvas.width - holeRadius),
+      y2: getRandomNumber(holeRadius, canvas.height - holeRadius),
+    };
+    if (isTunnel) {
+      tunnelHoles.push(newHole);
+    } else if (isMoving && isTunnel === false) {
+      movingHoles.push(newHole);
+    } else if (isMoving === false && isTunnel === false) {
+      staticHoles.push(newHole);
+    } else {
+      // do nothing
+    }
+    holes = [...staticHoles, ...movingHoles, ...tunnelHoles];
+  }
+}
+
+// ============================ REMOVE HOLE ============================
+function removeHole(holeToRemove) {
+  holes = holes.filter((hole) => hole.id !== holeToRemove.id);
+  if (holeToRemove.isMoving) {
+    movingHoles = movingHoles.filter((hole) => hole.id !== holeToRemove.id);
+  } else {
+    staticHoles = staticHoles.filter((hole) => hole.id !== holeToRemove.id);
+  }
+}
+
+// ============================ MOVE HOLES ============================
+function moveAllHoles(){
+  for(let hole of movingHoles){
+    moveHole(hole)
+  }
+}
+
+function moveHole(hole) {
+  const dx = hole.x - hole.x2;
+  const dy = hole.y - hole.y2;
+  const squaredDistance = dx * dx + dy * dy;
+
+  if (squaredDistance > movingHoleSpeed) {
+    const ratio = movingHoleSpeed / squaredDistance;
+    hole.x -= dx * ratio;
+    hole.y -= dy * ratio;
+  } else {
+    hole.x = hole.x2;
+    hole.y = hole.y2;
+
+    let tempx2 = hole.x2;
+    let tempy2 = hole.y2;
+
+    hole.x2 = hole.x1;
+    hole.y2 = hole.y1;
+
+    hole.x1 = tempx2;
+    hole.y1 = tempy2;
+  }
+}
+
+// ============================ DRAW HOLES ============================
+function drawHoles() {
+  for (let hole of holes) {
+    if (!hole.isTunnel) {
       ctx.beginPath();
-      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2, false);
+      ctx.arc(hole.x, hole.y, holeRadius, 0, Math.PI * 2, false);
       ctx.strokeStyle = "black";
+      ctx.lineWidth = 3;
       ctx.stroke();
-      ctx.lineWidth = 2;
+      ctx.closePath();
+    } else {
+      ctx.beginPath();
+      ctx.arc(hole.x, hole.y, holeRadius, 0, Math.PI * 2, false);
+      ctx.strokeStyle = "blue";
+      ctx.lineWidth = 6;
+      ctx.stroke();
       ctx.closePath();
     }
   }
+}
 
-// ============================ CHANGE BALL DIRECTION IF BALL HITS BORDER ============================
-function wallBounce() {
-    for (let ball of balls) {
-      // When the distance between center of the ball and border is same as the radius of the ball it will change movement direction
-      if (
-        ball.x + ball.dx > canvas.width - ball.radius ||
-        ball.x + ball.dx < ball.radius
-      ) {
-        ball.dx = -ball.dx;
-      }
-      if (
-        ball.y + ball.dy > canvas.height - ball.radius ||
-        ball.y + ball.dy < ball.radius
-      ) {
-        ball.dy = -ball.dy;
-      }
-      // update coords
-      ball.x += ball.dx;
-      ball.y += ball.dy;
+// ============================ CHECK DISTANCE BETWEEN BALL & HOLES ============================
+function checkDistance() {
+  for (let i = 0; i < holes.length; i++) {
+    const dx = ballX - holes[i].x;
+    const dy = ballY - holes[i].y;
+    const squaredDistance = dx * dx + dy * dy;
+    if (squaredDistance < maxDistance) {
+      handleBallInHole(holes[i]);
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-window.addEventListener('deviceorientation', onDeviceMove)
-
-// alpha - z - 0
-// beta - y - 90
-// gamma - x - 0
-
-function onDeviceMove(event) {
-    console.log(event)
 }
 
-function moveZ(alphaValue){
-
+// ----- handle ball in hole -----
+function handleBallInHole(filledHole) {
+  if (!filledHole.isTunnel) {
+    removeHole(filledHole);
+  } else {
+    teleportBall(filledHole);
+  }
 }
 
-function animate() {
-    //    console.log(Date.now())
-    // requestAnimationFrame(animate)
+// ----- teleport ball -----
+function teleportBall(hole) {
+  ballX = hole.x2;
+  ballY = hole.y2;
 }
 
-requestAnimationFrame(animate)
+// ============================ DRAW BALL ============================
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2, false);
+  ctx.fillStyle = "red";
+  ctx.fill();
+  ctx.closePath();
+}
+
+// ============================ STOP THE BALL IF HITS BORDER ============================
+function wallBounce() {
+  // When the distance between center of the ball and border is same as the radius of the ball it will change movement direction
+  if (
+    ballX + speedX > canvas.width - ballRadius ||
+    ballX + speedX < ballRadius
+  ) {
+    speedX = -speedX;
+  }
+  if (
+    ballY + speedY > canvas.height - ballRadius ||
+    ballY + speedY < ballRadius
+  ) {
+    speedY = -speedY;
+  }
+  // update coords
+  ballX += speedX;
+  ballY += speedY;
+}
+
+// ============================ CALCULATE BALL SPEED ============================
+function calculateSpeed() {
+  signX = Math.sign(beta);
+  signY = Math.sign(gamma);
+  let speedYn = -(180 - (Math.abs(beta) + 180)); // |  [-180, 180)   def: 0              360   => 1 : 1
+  let speedXn = -(90 - (Math.abs(gamma) + 90)); // ---  [-90, 90)    def: -90           180 => 1 : 2
+  speedY = Math.sign(beta) * speedYn * speedMulitplier;
+  speedX = Math.sign(gamma) * speedXn * speedMulitplier;
+  ballX += speedX;
+  ballY += speedY;
+}
+
+// ======== START GAME =========
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // clear game board
+  calculateSpeed();
+  drawHoles();
+  drawBall();
+  wallBounce();
+  checkDistance();
+  moveAllHoles();
+}
+
+function start() {
+  startInterval = setInterval(draw, 10);
+}
+
+function fifi() {
+  console.log(tunnelHoles);
+}
+createHoles(1, true, false); // create tunnels
+createHoles(1, false, false); // create static holes
+createHoles(1, false, true); // create moving holes
+start();
